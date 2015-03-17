@@ -1,0 +1,34 @@
+<div class="overlay__nav">
+	<a href="#list" class="nav-icon nav-icon--close"><img src="@@assetPath@@/imgs/close.svg"/></a>
+	<% if (data.nextItem) { %>
+		<a href="#item-<%= data.nextItem %>" class="nav-icon"><img src="@@assetPath@@/imgs/arrow-left.svg"/></a>
+	<% } %>
+	<% if (data.prevItem) { %>
+		<a href="#item-<%= data.prevItem %>" class="nav-icon"><img src="@@assetPath@@/imgs/arrow-right.svg"/></a>
+	<% } %>
+</div>
+<div class="overlay__main">
+	<div class="overlay__content <% if (data.updates[0].hasOwnProperty('image')) { %>overlay__content--<%= data.updates[0].image.orientation %> <% } %>">
+		<div class="overlay__headline"><%= data.headline %></div>
+		<div class="overlay__author">
+				by <span><%= data.user.displayName %></span>
+		</div>
+		<% if (data.updates[0].hasOwnProperty('image')) { %>
+			<div class="overlay__image overlay__image--<%= data.updates[0].image.orientation %>"/ style="background-image: url('<%= data.updates[0].image.extralarge %>');"></div>
+		<% } %>
+		<div class="overlay__left">
+			<div class="overlay__social">
+				<div class="overlay__left-title">Share this contribution</div>
+				<a href="https://www.facebook.com/sharer/sharer.php?u=<%= encodeURIComponent(window.location.href) %>" target="_blank" class="social-icon facebook"><img src="@@assetPath@@/imgs/share-facebook.svg"/></a>
+				<a href="https://twitter.com/intent/tweet?text=<%= encodeURIComponent('UK immigrant voices: "' + data.headline + '" @guardian') %>&url=<%= encodeURIComponent(window.location.href) %>" target="_blank" class="social-icon twitter"><img src="@@assetPath@@/imgs/share-twitter.svg"/></a>
+			</div>
+			<div class="overlay__witness">
+				<div class="overlay__left-title">GuardianWitness</div>
+				<a class="button button--secondary button--small" href="https://witness.theguardian.com/assignment/<%= noticeboard %>/<%= data.id.substring(7) %>" target="_blank">View contribution</a>
+			</div>
+		</div>
+		<div class="overlay__body-text">
+			<%= data.updates[0].body %>
+		</div>
+	</div>
+</div>

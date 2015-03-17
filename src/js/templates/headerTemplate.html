@@ -1,0 +1,19 @@
+<% if (isWeb !== false) { %>
+	<div id="guardianNav">
+	    <nav id="navContainer">
+	        <a href="http://theguardian.com" id="backtohome"><img id="homeLogo" src="@@assetPath@@/imgs/homeLogo.svg" /><span>home</span></a>
+	        <a href="http://theguardian.com"><img id="guardianLogo" src="@@assetPath@@/imgs/guardianLogo.png" /></a>
+	    </nav>
+	</div>
+<% } %>
+<div class="header">
+	<div class="container">
+		<div class="witness">
+			Contributions from
+			<div class="logo"><span class="logo--guardian">guardian</span><span class="logo--witness">witness</span></div>
+			<a href="https://witness.theguardian.com/assignment/<%= noticeboard %>" class="button button--secondary button--small" target="_blank">View assignment</a>
+		</div>
+		<h1><%= headingText.title %></h1>
+		<h2><%= headingText.subheading %></h2>
+	</div>
+</div>
