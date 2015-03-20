@@ -1,26 +1,28 @@
 <% if (item.updates[0].hasOwnProperty('image')) { %>
     <% if (item.updates[0].image.orientation === 'portrait') { %>
             <a href="#item-<%= item.id.substring(7) %>" id="item-<%= item.id.substring(7) %>" class="item item--portrait item--thin">
-                <div class="background-image portrait" data-original="<%= item.updates[0].image.mediumoriginalaspectdouble %>"></div>
                 <div class="wrapper">
-                    <div class="headline"><%= item.headline %></div>
-                    <div class="body"><%= item.headline.length <= 40 ? trunc(item.updates[0].body, 50) : trunc(item.updates[0].body, 20) %></div>
+                    <div class="background-image portrait" data-original="<%= item.updates[0].image.mediumoriginalaspectdouble %>">
+                        <div class="inner">
+                            <div class="headline"><span><%= item.headline %></span></div>
+                        </div>
+                    </div>
                 </div>
+
             </a>
     <% } else if (item.updates[0].image.orientation === 'landscape') { %>
             <a href="#item-<%= item.id.substring(7) %>" id="item-<%= item.id.substring(7) %>" class="item item--landscape">
-                <div class="background-image landscape" data-original="<%= item.updates[0].image.mediumoriginalaspectdouble %>"></div>
                 <div class="wrapper">
-                    <div class="headline"><%= item.headline %></div>
-                    <div class="body"><%= trunc(item.updates[0].body, 130) %></div>
+                    <div class="background-image landscape" data-original="<%= item.updates[0].image.mediumoriginalaspectdouble %>">
+                        <div class="headline"><span><%= item.headline %></span></div>
+                    </div>
                 </div>
             </a>
     <% } %>
 <% } else { %>
     <a href="#item-<%= item.id.substring(7) %>" id="item-<%= item.id.substring(7) %>" class="item item--no-image item--thin">
         <div class="wrapper">
-            <div class="quote"><%= trunc(item.updates[0].body, 250) %></div>
-            <div class="author">by <span><%= item.user.displayName %></span></div>
+            <div class="quote"><span><%= trunc(item.updates[0].body, 200) %></span></div>
         </div>
     </a>
 <% } %>

@@ -16,11 +16,11 @@ define([
    'use strict';
 
     var itemCollection,
-        headingText = {title: 'Immigrants in their own words: 100 stories',
-                       subheading: 'Earlier this year, the Guardian asked immigrants living in Britain to tell us about their experiences. What follows are the voices of the people who have come to Britain, by choice or through circumstance, describing their life in the UK and how they feel about the political debate surrounding immigration. These are their stories.'},
+        headingText = {title: 'Immigrants in their own words <span class="headline-highlight">100 stories</span>',
+                       subheading: 'Earlier this year, the Guardian asked immigrants living in Britain to tell us about their experiences. What follows are the voices of people who have come to the country, by choice or through circumstance. These are their stories.'},
         noticeboardID = '54d891e9e4b045255634008f',
         isWeb = typeof window.guardian === "undefined" ? false : true,
-        sortIDs = ['1389209', '1376612', '1385299'];
+        sortIDs = ['1433041', '1414116', '1414089', '1412813', '1406807', '1412847', '1393388', '1412841', '1414107', '1414097', '1414112', '1375728', '1414120', '1420599', '1422203', '1426038', '1433161', '1433182', '1433016', '1433051', '1433093', '1433131', '1433135', '1412810', '1433136', '1432899', '1432913', '1432964', '1433141', '1412817'];
 
     // FOR TESTING:
     isWeb = true;
@@ -31,7 +31,7 @@ define([
 
         var ItemList = Backbone.Collection.extend({
             model: Item,
-            url: 'http://n0ticeapis.com/2/search?noticeboard='+ noticeboardID + '&limit=100',
+            url: 'http://n0ticeapis.com/2/search?noticeboard='+ noticeboardID + '&limit=100&votedInterestingBy=RosieSwash',
             sync : function(method, collection, options) {
                 options.dataType = "jsonp";
                 options.cache = true;
@@ -50,7 +50,6 @@ define([
         var ModalView = Backbone.View.extend({
             template: _.template(modalTmpl),
             initialize: function() {
-                // _.bindAll(this, 'render');
                 $('.element-interactive').after('<div class="overlay__container"><div class="overlay__body"></div></div>');
             },
             render: function() {
@@ -61,34 +60,22 @@ define([
 
                 return this;
             },
-            renderMobile: function(itemID) {
-                var $item = $('#item-' + itemID);
-                if($item.has('.body').length) {
-                    $('#item-' + itemID + ' .body').html(items.where({ id: 'report/' + itemID })[0].attributes.updates[0].body);
-                } else {
-                    $item.find('.quote').remove();
-                    $item.find('.wrapper').prepend('<div class="body">' + items.where({ id: 'report/' + itemID })[0].attributes.updates[0].body + '</div>');
-                }
-            },
+
             addNavAtts: function(itemID) {
-                if($(document).width() > 740) {
-                    this.model.shift();
-                    this.model.unshift(items.where({ id: 'report/' + itemID }));
+                this.model.shift();
+                this.model.unshift(items.where({ id: 'report/' + itemID }));
 
-                    var indexPos = _.indexOf(items.models, items.where({ id: 'report/' + itemID })[0]);
-                    
-                    if(items.at(indexPos+1)) {
-                        this.model.models[0].set('nextItem', items.at(indexPos+1).attributes.id.substring(7));
-                    }
-
-                    if(items.at(indexPos-1)) {
-                        this.model.models[0].set('prevItem', items.at(indexPos-1).attributes.id.substring(7));
-                    }
-
-                    this.render();
-                } else {
-                    this.renderMobile(itemID);
+                var indexPos = _.indexOf(items.models, items.where({ id: 'report/' + itemID })[0]);
+                
+                if(items.at(indexPos+1)) {
+                    this.model.models[0].set('nextItem', items.at(indexPos+1).attributes.id.substring(7));
                 }
+
+                if(items.at(indexPos-1)) {
+                    this.model.models[0].set('prevItem', items.at(indexPos-1).attributes.id.substring(7));
+                }
+
+                this.render();
             }
         });
 
@@ -101,12 +88,47 @@ define([
                 this.setElement('<div class="main"></div>');
             },
             render: function() {
-                var that = this;
+                var that = this,
+                    perRow = 4,
+                    counter = 0, 
+                    sliced,
+                    toMove;
+
                 sortIDs.reverse().map(function(id) {
                     var toAdd = that.model.where({ id: 'report/' + id });
                     that.model.remove(toAdd);
                     that.model.unshift(toAdd);
                 });
+
+                // reorder collection to avoid gaps in the grid
+                if($(document).width() > 980) {
+                    _.each(this.model.models, function(item, i) {
+                        if(item.attributes.updates[0].hasOwnProperty('image')) {
+                            if(item.attributes.updates[0].image.orientation == 'landscape') {
+                                counter += 2;
+                            } else {
+                                counter += 1;
+                            }
+                        } else {
+                            counter += 1;
+                        }
+
+                        if(counter == perRow + 1) {
+                            console.log(i);
+                            sliced = _.filter(items.slice(i, items.length), function (item) {
+                                return (item.attributes.updates[0].hasOwnProperty('image') && item.attributes.updates[0].image.orientation === 'portrait') || !item.attributes.updates[0].hasOwnProperty('image');
+                            });
+                            if(sliced.length > 0) {
+                                toMove = that.model.where({id: sliced[0].attributes.id});
+                                that.model.remove(toMove);
+                                that.model.add(toMove, {at: i});
+                            }
+                            counter = 0;
+                        } else if(counter == perRow) {
+                            counter = 0;
+                        }
+                    });
+                }
 
                 _.each(this.model.models, function(item){
                     var itemTemplate = this.template({item: item.toJSON(), trunc: trunc});
@@ -140,13 +162,13 @@ define([
                 $('.main').before(headerHTML).after(footerHTML);
 
                 // This adjusts the ordering to get rid of any gaps
-                $('.item--landscape').each(function(i, item) {
-                    var $item = $(item);
-                    if($item.position().left === 0 && $item.position().top > 100 ) {
-                        var itemToMove = $item.nextAll(".item--thin").first().detach();
-                        $item.before(itemToMove);
-                    }
-                });
+                // $('.item--landscape').each(function(i, item) {
+                //     var $item = $(item);
+                //     if($item.position().left === 0) {
+                //         var itemToMove = $item.nextAll(".item--thin").first().detach();
+                //         $item.before(itemToMove);
+                //     }
+                // });
 
                 $('div.background-image').lazyload({
                     effect : "fadeIn",
@@ -198,7 +220,7 @@ define([
             firstSentence = textSubstr.substr(0, textSubstr.lastIndexOf('.'));
 
         if (firstSentence) {
-            return firstSentence + ' ...';
+            return firstSentence + '.';
         } else {
             return textSubstr + '...';
         }

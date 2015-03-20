@@ -50,7 +50,8 @@ module.exports = function(grunt) {
 
     autoprefixer: {
         options: {
-            map: (isDev) ? true : false 
+            map: (isDev) ? true : false,
+            browsers: ['last 2 versions', '> 1%', 'firefox 20']
         },
         css: { src: 'build/assets/css/*.css' }
     },
