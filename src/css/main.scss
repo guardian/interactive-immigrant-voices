@@ -98,7 +98,6 @@ body {
 	background-size: cover;
 	background-repeat: no-repeat;
     box-sizing: border-box;
-    float: left;
 
 	&.overlay__image--landscape {
 		width: 100%;
@@ -107,34 +106,53 @@ body {
 	}
 
 	&.overlay__image--portrait {
-		width: 100%;
-		padding-bottom: 66%;
-		margin-bottom: $gs-baseline*3;
+		width: 50%;
+		padding-bottom: 88%;
+		margin-left: 20px;
+		margin-bottom: $gs-baseline*2;
 	}
 
 	@include mq(tablet) {
 		width: 740px;
-	}
-
-	@include mq(desktop) {
-		width: 980px;
+		margin-left: 0 !important;
 	}
 
 	@include mq(leftCol) {
-		width: 1140px;
+		float: left;
+		&.overlay__image--landscape {
+			width: 360px;
+			height: 270px;
+			padding: 0;
+		}
+
+		&.overlay__image--portrait {
+			width: 360px;
+			height: 480px;
+			padding: 0;
+		}
 	}
 
 	@include mq(wide) {
 		&.overlay__image--landscape {
+			width: 500px;
+			height: 375px;
+		}
+
+		&.overlay__image--portrait {
+			width: 500px;
+			height: 667px;
+		}
+	}
+
+	@include mq(extraWide) {
+		&.overlay__image--landscape {
 			width: 620px;
 			height: 465px;
-			padding: 0;
 		}
 
 		&.overlay__image--portrait {
 			width: 620px;
 			height: 826px;
-			padding: 0;
 		}
 	}
 }
@@ -145,7 +163,7 @@ body {
 	margin: auto;
 	overflow: hidden;
 	background-color: rgba(255,255,255,0.94);
-	padding: $gs-baseline*6 0px 0 0;
+	padding: $gs-baseline*7 0px 0 0;
 	font-size: 16px;
 	line-height: 26px;
 	color: #000;
@@ -164,45 +182,39 @@ body {
 	margin: auto;
 
 	@include mq(tablet) {
-		width: 740px;
-	}
-
-	@include mq(desktop) {
-		width: 980px;
+		width: 620px;
 	}
 
 	@include mq(leftCol) {
-		width: 1140px;
+		width: 1020px;
 	}
 
 	@include mq(wide) {
+		width: 1180px;
+	}
+
+	@include mq(extraWide) {
 		width: 1300px;
 	}
 }
 
 .overlay__content {
 	width: 100%;
-	padding: $gs-baseline $gs-gutter;
+	padding: $gs-baseline $gs-gutter $gs-baseline*3;
 	box-sizing: border-box;
 
 	&.overlay__content--landscape,
 	&.overlay__content--portrait {
-		float: right;
+		@include mq(leftCol) {
+			float: right;
+		}
 	}
 
 	@include mq(tablet) {
-		padding: 0;
+		padding: 0 0 $gs-baseline*3;
 	}
 
 	@include mq(desktop) {
-		width: 620px;
-	}
-
-	@include mq(leftCol) {
-		width: 620px;
-	}
-
-	@include mq(wide) {
 		width: 620px;
 	}
 
@@ -261,6 +273,13 @@ body {
 			background-color: #03b3ee;
 			&:hover {
 				background-color: darken(#03b3ee, 10%);
+			}
+		}
+
+		&.email {
+			background-color: #767676;
+			&:hover {
+				background-color: darken(#767676, 10%);
 			}
 		}
 	}
@@ -399,6 +418,10 @@ body {
 		float: right;
 		margin-right: $gs-gutter;
 	}
+
+	a {
+		text-decoration: none;
+	}
 }
 
 
@@ -495,13 +518,19 @@ body {
 }
 
 .headline-highlight {
-	color: #bbd6e9;
+	color: #94bfdd;
+	text-decoration: none;
 
 	.overlay__header & {
 		@include mq($until: tablet) {
 		  font-size: 28px;
 		  padding-top: 10px;
 		  display: inline-block;
+		}
+
+		&:hover {
+			color: darken(#94bfdd, 10%);
+			text-decoration: underline;
 		}
 	}
 }
@@ -523,15 +552,15 @@ body {
 
 	@include mq(tablet) {
 		&.item--landscape {
-			width: 33.333%;
+			width: 50%;
 		}
 
 		&.item--portrait {
-			width: 33.333%;
+			width: 50%;
 		}
 
 		&.item--no-image {
-			width: 33.333%;
+			width: 50%;
 		}
 	}
 
@@ -573,12 +602,18 @@ body {
 		padding: 30px 0;
       	box-sizing: border-box;
       	border-top: 1px solid #dfdfdf;
+      	overflow: hidden;
 	}
 
 	.inner {
 		background-color: #fff;
 		padding: 24px 20px;
 		box-sizing: border-box;
+
+		@include mq($until: tablet) {
+			margin-left: 100%;
+			height: 100%;
+		}
 	}
 
 	.author {
@@ -632,11 +667,16 @@ body {
 				font-weight: 700;
 				position: absolute;
 				bottom: $gs-baseline;
+
+				@include mq($until: tablet) {
+					position: inherit;
+					padding-top: $gs-baseline/2;
+				}
 			}
 		}
 
 		.headline {
-			padding-bottom: 46px;
+			padding-bottom: 46px !important;
 		}
 	}
 	&.item--landscape {
@@ -650,7 +690,7 @@ body {
 	&.item--portrait {
 		&:hover {
 			.headline {
-				padding-bottom: 18px;
+				padding-bottom: 18px !important;
 			}
 		}
 	}
@@ -670,6 +710,35 @@ body {
 	}
 }
 
+
+.item--portrait {
+	@include mq(tablet, desktop) {
+		.inner {
+			background-color: transparent;
+			padding: 0;
+		}
+
+		.headline {
+			color: #fff;
+			font-size: 30px;
+			line-height: 32px;
+			text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+
+			width: 100%;
+			box-sizing: border-box;
+			padding: 24px 20px;
+
+			background: -moz-linear-gradient(top,  rgba(0,0,0,0) 0%, rgba(0,0,0,0.65) 85%, rgba(0,0,0,0.65) 100%); /* FF3.6+ */
+			background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0)), color-stop(85%,rgba(0,0,0,0.65)), color-stop(100%,rgba(0,0,0,0.65))); /* Chrome,Safari4+ */
+			background: -webkit-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 85%,rgba(0,0,0,0.65) 100%); /* Chrome10+,Safari5.1+ */
+			background: -o-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 85%,rgba(0,0,0,0.65) 100%); /* Opera 11.10+ */
+			background: -ms-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 85%,rgba(0,0,0,0.65) 100%); /* IE10+ */
+			background: linear-gradient(to bottom,  rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 85%,rgba(0,0,0,0.65) 100%); /* W3C */
+			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#a6000000',GradientType=0 ); /* IE6-9 */
+		}
+	}
+}
+
 .background-image {
 	background-size: cover;
 	background-position: center center;
@@ -683,7 +752,7 @@ body {
 		}
 
 		@include mq(tablet) {
-			height: 170px;
+			height: 370px;
 		}
 
 		@include mq(desktop) {

@@ -172,7 +172,7 @@ define([
 
                 $('div.background-image').lazyload({
                     effect : "fadeIn",
-                    effectspeed: 100
+                    effectspeed: 200
                 });
 
                 return this;
