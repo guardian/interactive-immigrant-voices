@@ -2,10 +2,9 @@
     <% if (item.updates[0].image.orientation === 'portrait') { %>
             <a href="#item-<%= item.id.substring(7) %>" id="item-<%= item.id.substring(7) %>" class="item item--portrait item--thin">
                 <div class="wrapper">
-                    <div class="background-image portrait" data-original="<%= item.updates[0].image.mediumoriginalaspectdouble %>">
-                        <div class="inner">
-                            <div class="headline"><span><%= item.headline %></span></div>
-                        </div>
+                    <div class="background-image portrait" data-original="<%= item.updates[0].image.mediumoriginalaspectdouble %>"></div>
+                    <div class="inner">
+                        <div class="headline"><span><%= item.headline %></span></div>
                     </div>
                 </div>
 
@@ -13,9 +12,8 @@
     <% } else if (item.updates[0].image.orientation === 'landscape') { %>
             <a href="#item-<%= item.id.substring(7) %>" id="item-<%= item.id.substring(7) %>" class="item item--landscape">
                 <div class="wrapper">
-                    <div class="background-image landscape" data-original="<%= item.updates[0].image.mediumoriginalaspectdouble %>">
-                        <div class="headline"><span><%= item.headline %></span></div>
-                    </div>
+                    <div class="background-image landscape" data-original="<%= item.updates[0].image.mediumoriginalaspectdouble %>"></div>
+                    <div class="headline"><span><%= item.headline %></span></div>
                 </div>
             </a>
     <% } %>

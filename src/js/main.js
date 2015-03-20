@@ -55,6 +55,7 @@ define([
             render: function() {
                 var modalTemplate = this.template({data: this.model.models[0].toJSON(), noticeboard: noticeboardID});
                 $('.overlay__body').html(modalTemplate);
+                $('.overlay__body').scrollTop(0);
                 $('.overlay__container').addClass('overlay__container--show');
                 $('body').addClass('dropdown-open');
 
@@ -161,18 +162,9 @@ define([
                 $('.element-interactive').html(html);
                 $('.main').before(headerHTML).after(footerHTML);
 
-                // This adjusts the ordering to get rid of any gaps
-                // $('.item--landscape').each(function(i, item) {
-                //     var $item = $(item);
-                //     if($item.position().left === 0) {
-                //         var itemToMove = $item.nextAll(".item--thin").first().detach();
-                //         $item.before(itemToMove);
-                //     }
-                // });
-
                 $('div.background-image').lazyload({
                     effect : "fadeIn",
-                    effectspeed: 200
+                    effectspeed: 250
                 });
 
                 return this;
