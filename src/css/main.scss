@@ -21,25 +21,31 @@ body {
 	padding: 0;
 	margin: 0;
 	background-color: #f4f4f4;
-
-	&.dropdown-open {
-  		overflow: hidden;
- 	}
 }
 
-html {
-	height: 100%;
+.dropdown-open {
+	@include mq(desktop) {
+  		overflow: hidden;
+  		height: 100%;
+  	}
 }
 
 figure {
 	margin-top: 0 !important;
+	margin-bottom: 0 !important;
 }
 
 .element-interactive {
-  background-color: #f4f4f4;
-  padding: 0;
-  margin: 0;
-  font-family: "Guardian Text Egyptian Web",Georgia,serif;
+	background-color: #f4f4f4;
+	padding: 0;
+	margin: 0;
+	font-family: "Guardian Text Egyptian Web",Georgia,serif;
+
+	.dropdown-open & {
+		@include mq($until: desktop) {
+			display: none;
+		}
+	}
 }
 
 .main,
@@ -72,6 +78,21 @@ figure {
 
 	@include mq(tablet) {
 		border-right: 1px solid #dfdfdf;
+	}
+}
+
+.about {
+	border: 0;
+	border-top: 1px solid #dfdfdf;
+	font-size: 16px;
+	line-height: 28px; 
+	color: #767676;
+	font-family: "Guardian Text Sans Web","Agate Sans",sans-serif;
+	padding-top: 24px;
+	margin-bottom: 72px;
+
+	a {
+		color: #767676;
 	}
 }
 
@@ -112,9 +133,16 @@ figure {
     box-sizing: border-box;
 	display: none;
 	opacity: 0;
+	-webkit-overflow-scrolling: touch;
 	-webkit-animation-duration: 0.25s;
     -webkit-animation-name: fadeInFromNone;
-    z-index: 10;
+    z-index: 99999;
+
+    @include mq($until: desktop) {
+    	position: absolute;
+    	height: auto;
+    	overflow: visible;
+    }
 }
 
 .overlay__container--show {
@@ -243,7 +271,7 @@ figure {
 
 .overlay__content {
 	width: 100%;
-	padding: $gs-baseline $gs-gutter $gs-baseline*3;
+	padding: $gs-baseline $gs-gutter 0;
 	box-sizing: border-box;
 
 	&.overlay__content--landscape,
@@ -278,9 +306,9 @@ figure {
 		.overlay__content--portrait & {
 			border: 0;
 			padding: 0;
-			padding-bottom: $gs-baseline*3;
 		}
 	}
+	padding-bottom: $gs-baseline*3;
 }
 
 .overlay__social {
@@ -519,7 +547,22 @@ figure {
 			font-weight: 200;
 			margin: 0;
 			margin-top: 36px;
-			max-width: 750px;
+			max-width: 780px;
+
+			.link {
+				font-size: 18px;
+				font-weight: 500;
+				color: #666;
+
+				a {
+					color: #005689;
+					text-decoration: none;
+
+					&:hover {
+						text-decoration: underline;
+					}
+				}
+			}
 
 			@include mq($until: tablet) {
 				font-size: 18px;
@@ -588,7 +631,7 @@ figure {
     box-sizing: border-box;
 	transition : border 150ms ease-out;
 	padding: 0px 20px;
-	text-decoration: none;
+	text-decoration: none !important;
 	color: #333;
 	position: relative;
 	margin: 0;
@@ -638,12 +681,10 @@ figure {
 		font-size: 14px;
 		line-height: 20px;
 		color: #767676;
-		// font-family: "Guardian Text Sans Web","Agate Sans",sans-serif;
 	}
 
 	.wrapper {
 		padding: 30px 0;
-      	box-sizing: border-box;
       	border-top: 1px solid #dfdfdf;
       	overflow: hidden;
       	position: relative;
@@ -664,7 +705,6 @@ figure {
 		span {
 			font-weight: 500;
 		}
-		// font-family: "Guardian Text Sans Web","Agate Sans",sans-serif;
 	}
 
 	.quote {
@@ -673,52 +713,53 @@ figure {
 		font-size: 24px;
 		line-height: 32px;
 		padding: 24px 20px;
+		overflow: hidden;
 		box-sizing: border-box;
 		font-family: "Guardian Egyptian Web","Agate Sans",sans-serif;
 
-		@include mq(tablet) {
-		}
-
-		@include mq(desktop) {
-
-		}
-
-		@include mq(wide) {
-			height: 456px;
-		}
-
 		&:hover {
 			cursor: pointer;
+		}
+
+		@include mq(desktop, leftCol) {
+			font-size: 16px;
+			line-height: 26px;
+		}
+
+		@include mq(leftCol, wide) {
+			font-size: 20px;
+			line-height: 28px;
 		}
 	}
 
 	&:hover {
 		span {
 			border-bottom: 2px solid #4bc6df;
-			&:after {
-				content: 'READ STORY';
-				opacity: 1;
-				font-family: "Guardian Sans Web","Agate Sans",sans-serif;
-				border-bottom: 0;
-				display: block;
-				color: #4bc6df;
-				font-size: 14px;
-				font-weight: 700;
-				position: absolute;
-				bottom: $gs-baseline;
+			text-decoration: none !important;
+		}
 
-				// @include mq($until: tablet) {
-				// 	position: inherit;
-				// 	padding-top: $gs-baseline/2;
-				// }
+		@include mq(tablet) {
+			.headline span {
+				&:after {
+					content: 'READ STORY';
+					opacity: 1;
+					font-family: "Guardian Sans Web","Agate Sans",sans-serif;
+					border-bottom: 0;
+					display: block;
+					color: #4bc6df;
+					font-size: 14px;
+					font-weight: 700;
+					position: absolute;
+					bottom: $gs-baseline;
+				}
+			}
+
+			.headline {
+				padding-bottom: 46px !important;
 			}
 		}
 
-		.headline {
-			padding-bottom: 46px !important;
-		}
-
-		.background-image {
+		.image__container {
 			opacity: 0.9;
 		}
 	}
@@ -727,6 +768,11 @@ figure {
 			text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
 			font-size: 30px;
 			line-height: 32px;
+
+			.headline--anonymous {
+				font-size: 22px;
+				color: rgba(255,255,255,0.7);
+			}
 		}
 	}
 
@@ -740,6 +786,29 @@ figure {
 		}
 	}
 	&.item--no-image {
+		.headline {
+			padding-left: 20px;
+			padding-right: 20px;
+		}
+
+		.wrapper {
+			@include mq(tablet) {
+				height: 370px;
+			}
+
+			@include mq(desktop) {
+				height: 350px;
+			}
+
+			@include mq(leftCol) {
+				height: 380px;
+			}
+
+		@include mq(wide) {
+			height: 456px;
+		}
+		}
+
 		&:hover {
 			span {
 				&:after {
@@ -784,12 +853,15 @@ figure {
 	}
 }
 
+.image__container {
+	transition: opacity 0.25s;
+	opacity: 1;
+}
+
 .background-image {
 	background-size: cover;
 	background-position: center center;
 	position: relative;
-	transition: opacity 0.25s;
-	opacity: 1;
 
 	&.landscape {
 		width: 100%;
@@ -883,114 +955,6 @@ figure {
 	}
 }
 
-// Guardian Nav
-
-#guardianNav {
-	height:48px;
-	background:#296d96;
-	width:100%;
-}
-.contentBlock {
-	margin:0 10px;
-	max-width:1300px;
-}
-
-#navContainer {
-	background:#005689;
-	height:100%;
-	padding:1px 10px 0;
-	margin: auto;
-	-moz-box-sizing: border-box;
-       box-sizing: border-box;
-	&:after{
-		clear:both;
-		content:'';
-		display:block;
-	}
-
-	@include mq(tablet) {
-		width: 740px;
-	}
-
-	@include mq(desktop) {
-		width: 980px;
-	}
-
-	@include mq(leftCol) {
-		width: 1140px;
-	}
-
-	@include mq(wide) {
-		width: 1300px;
-	}
-
-}
-
-#guardianLogo {
-	width:170px;
-	float:right;
-	margin-top:10px;
-	display:inline-block;
-}
-
-#homeLogo {
-	width:15px;
-	height:18px;
-	margin-top:14px;
-	display:inline-block;
-	margin-right:7px;
-	vertical-align:top;
-}
-
-#backtohome{
-	color: #fff;
-	font-weight: bold;
-	text-decoration: none;
-	vertical-align:top;
-	span{
-		display:inline-block;
-		padding-top:13px;
-	}
-}
-
-#headerContainer {
-	position:relative;
-	margin-bottom:20px;
-	h2 {
-        color:#ffeaff;
-		font-size: 16px;
-		font-weight: bold;
-        line-height: 1.25;
-		max-width:64%;
-		margin:-20px auto 30px;
-		z-index:6;
-		position:relative;
-        opacity: 0.8;
-	}
-	img {
-		width:120%;
-        margin-left:-10%;
-		z-index:4;
-		position:relative;
-	}
-	#headerImage {
-		font-size:0;
-		position:relative;
-		overflow:hidden;
-		width:100%;
-	}
-	#headerImage:after {
-		width: 100%;
-		height: 35%;
-		content: '';
-		background: linear-gradient(to bottom,rgba(52,52,52,0),rgba(52,52,52,1));
-		position: absolute;
-		bottom: 0;
-		left: 0;
-		z-index:5;
-	}
-}
-
 // Guardian Footer
 
 footer {
@@ -1067,4 +1031,29 @@ footer {
         display: block ; 
         opacity: 1;
     }
+}
+
+//Apps 
+
+a,p a,li a{
+	background: none;
+	text-shadow: none;
+}
+
+body,
+.interactive {
+    margin: 0 !important;
+}
+
+figure.element-interactive {
+    margin: 0;
+}
+
+#article-body.interactivePadding {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+a {
+    text-shadow: none !important;
 }

@@ -2,7 +2,9 @@
     <% if (item.updates[0].image.orientation === 'portrait') { %>
             <a href="#item-<%= item.id.substring(7) %>" id="item-<%= item.id.substring(7) %>" class="item item--portrait item--thin">
                 <div class="wrapper">
-                    <div class="background-image portrait" data-original="<%= item.updates[0].image.mediumoriginalaspectdouble %>"></div>
+                    <div class="image__container">
+                        <div class="background-image portrait" data-original="<%= item.updates[0].image.mediumoriginalaspectdouble %>"></div>
+                    </div>
                     <div class="inner">
                         <div class="headline"><span><%= item.headline %></span></div>
                     </div>
@@ -12,8 +14,10 @@
     <% } else if (item.updates[0].image.orientation === 'landscape') { %>
             <a href="#item-<%= item.id.substring(7) %>" id="item-<%= item.id.substring(7) %>" class="item item--landscape">
                 <div class="wrapper">
-                    <div class="background-image landscape" data-original="<%= item.updates[0].image.mediumoriginalaspectdouble %>"></div>
-                    <div class="headline"><span><%= item.headline %></span></div>
+                    <div class="image__container">
+                        <div class="background-image landscape" data-original="<%= item.updates[0].image.mediumoriginalaspectdouble %>"></div>
+                    </div>
+                    <div class="headline"><span<% if(item.headline == 'Anonymous') { %> class="headline--anonymous"<% } %>><%= item.headline %></span></div>
                 </div>
             </a>
     <% } %>
@@ -21,6 +25,7 @@
     <a href="#item-<%= item.id.substring(7) %>" id="item-<%= item.id.substring(7) %>" class="item item--no-image item--thin">
         <div class="wrapper">
             <div class="quote"><span><%= trunc(item.updates[0].body, 200) %></span></div>
+            <div class="headline"><span<% if(item.headline == 'Anonymous') { %> class="headline--anonymous"<% } %>><%= item.headline %></span></div>
         </div>
     </a>
 <% } %>

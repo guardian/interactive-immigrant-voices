@@ -17,21 +17,18 @@ define([
 
     var itemCollection,
         headingText = {title: 'Immigrants in their own words <span class="headline-highlight">100 stories</span>',
-                       subheading: 'Earlier this year, the Guardian asked immigrants living in Britain to tell us about their experiences. What follows are the voices of people who have come to the country, by choice or through circumstance. These are their stories.'},
+                       subheading: 'What pushed them away from their first homes, what pulled them to these shores, what new lives are they making in Britain? The Guardian asked immigrants living in the UK to tell us about their experiences. These are their stories<br><br><div class="link">The Guardian’s immigration special: <a href="http://gu.com/p/46qgd" target="_blank">introduction by Jonathan Freedland</a></div>'},
         noticeboardID = '54d891e9e4b045255634008f',
         isWeb = typeof window.guardian === "undefined" ? false : true,
-        sortIDs = ['1433041', '1414116', '1414089', '1412813', '1406807', '1412847', '1393388', '1412841', '1414107', '1414097', '1414112', '1375728', '1414120', '1420599', '1422203', '1426038', '1433161', '1433182', '1433016', '1433051', '1433093', '1433131', '1433135', '1412810', '1433136', '1432899', '1432913', '1432964', '1433141', '1412817'];
-
-    // FOR TESTING:
-    isWeb = true;
-    // Remove ^
+        sortIDs = ['1433041', '1414116', '1414089', '1406807', '1393388', '1441027', '1412847', '1412841', '1414107', '1441032', '1414112', '1375728', '1414120', '1420599', '1441020', '1422203', '1426038', '1433182', '1441035', '1441024', '1433051', '1441029', '1412813', '1414097', '1412810', '1432899', '1432913', '1432964', '1441039', '1412817'],
+        lastModal;
 
     function init() {
         var Item = Backbone.Model.extend();
 
         var ItemList = Backbone.Collection.extend({
             model: Item,
-            url: 'http://n0ticeapis.com/2/search?noticeboard='+ noticeboardID + '&limit=100&votedInterestingBy=RosieSwash',
+            url: 'http://n0ticeapis.com/2/search?noticeboard='+ noticeboardID + '&limit=100&votedInterestingBy=RosieSwash,Jholder112233',
             sync : function(method, collection, options) {
                 options.dataType = "jsonp";
                 options.cache = true;
@@ -50,18 +47,29 @@ define([
         var ModalView = Backbone.View.extend({
             template: _.template(modalTmpl),
             initialize: function() {
+                $(document).on('keydown', this.keydown);
                 $('.element-interactive').after('<div class="overlay__container"><div class="overlay__body"></div></div>');
             },
             render: function() {
                 var modalTemplate = this.template({data: this.model.models[0].toJSON(), noticeboard: noticeboardID});
                 $('.overlay__body').html(modalTemplate);
-                $('.overlay__body').scrollTop(0);
+                $('body').scrollTop(0);
                 $('.overlay__container').addClass('overlay__container--show');
-                $('body').addClass('dropdown-open');
+                $('html').addClass('dropdown-open');
 
                 return this;
             },
+            keydown: function(event) {
+                var e = window.event;
 
+                if (e.keyCode == 39 && window.location.hash.substring(0,5) == '#item' && modalView.model.models[0].attributes.nextItem) {
+                    window.location.hash = 'item-' + modalView.model.models[0].attributes.nextItem;
+                }
+
+                if (e.keyCode == 37 && window.location.hash.substring(0,5) == '#item' && modalView.model.models[0].attributes.prevItem) {
+                    window.location.hash = 'item-' + modalView.model.models[0].attributes.prevItem;
+                }
+            },
             addNavAtts: function(itemID) {
                 this.model.shift();
                 this.model.unshift(items.where({ id: 'report/' + itemID }));
@@ -115,7 +123,6 @@ define([
                         }
 
                         if(counter == perRow + 1) {
-                            console.log(i);
                             sliced = _.filter(items.slice(i, items.length), function (item) {
                                 return (item.attributes.updates[0].hasOwnProperty('image') && item.attributes.updates[0].image.orientation === 'portrait') || !item.attributes.updates[0].hasOwnProperty('image');
                             });
@@ -145,6 +152,7 @@ define([
         var items = new ItemList;
 
         var AppView = Backbone.View.extend({
+
             render: function(){
                 var itemsView = new ItemsView({model:items}),
                     html = itemsView.render().el,
@@ -164,7 +172,8 @@ define([
 
                 $('div.background-image').lazyload({
                     effect : "fadeIn",
-                    effectspeed: 250
+                    effectspeed: 250,
+                    threshold : 750
                 });
 
                 return this;
@@ -194,13 +203,19 @@ define([
 
             app_router.on('route:modalRoute', function(itemID) {
                 if(itemID !== null) {
+                    lastModal = itemID;
                     modalView.addNavAtts(itemID);
                 }
             });
 
             app_router.on('route:closeRoute', function() {
                 $('.overlay__container').removeClass('overlay__container--show');
-                $('body').removeClass('dropdown-open');
+                $('html').removeClass('dropdown-open');
+
+                if(lastModal) {
+                    console.log($('#item-' + lastModal + '').offset().top);
+                    window.scrollTo(0,$('#item-' + lastModal + '').offset().top);
+                }
             });
 
             Backbone.history.start();
