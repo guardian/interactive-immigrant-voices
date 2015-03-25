@@ -2,6 +2,14 @@
 	<div class="container">
 		<h1><%= headingText.title %></h1>
 		<h2><%= headingText.subheading %></h2>
+		<div class="header__social">
+			<a href="https://www.facebook.com/sharer/sharer.php?u=<%= encodeURIComponent('http://gu.com/p/46zn6') %>" target="_blank" class="social-icon facebook" data-link-name="social facebook voices-header"><img src="@@assetPath@@/imgs/share-facebook.svg"/></a>
+			<a href="https://twitter.com/intent/tweet?text=<%= encodeURIComponent('Immigrants in their own words: 100 stories @guardian') %>&url=<%= encodeURIComponent('http://gu.com/p/46zn6') %>" target="_blank" data-link-name="social twitter voices-header" class="social-icon twitter"><img src="@@assetPath@@/imgs/share-twitter.svg"/></a>
+			<a href="mailto:?subject=<%= encodeURIComponent('Immigrants in their own words: 100 stories') %>&body=<%= encodeURIComponent('http://gu.com/p/46zn6') %>" target="_blank" class="social-icon email" data-link-name="social email voices-header"><img src="@@assetPath@@/imgs/share-email.svg"/></a>
+		</div>
 	</div>
 </div>
+<a class="back-to-top">
+	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="18"><path class="up-arrow" d="M.4 15.3l10.5-8.4 1.1-.9 1.1.9 10.5 8.4-.5.7-11.1-6.3-11.1 6.3-.5-.7z"/></svg>
+</a>
 <div class="buffer"></div>

@@ -39,7 +39,7 @@ figure {
 	background-color: #f4f4f4;
 	padding: 0;
 	margin: 0;
-	font-family: "Guardian Text Egyptian Web",Georgia,serif;
+	font-family: "Guardian Text Egyptian Web","Egyptian Text",Georgia,serif;
 
 	.dropdown-open & {
 		@include mq($until: desktop) {
@@ -93,6 +93,7 @@ figure {
 
 	a {
 		color: #767676;
+		text-decoration: underline !important;
 	}
 }
 
@@ -120,6 +121,43 @@ figure {
 		width: 1300px;
 	}
 }
+
+.back-to-top {
+	position: fixed;
+	bottom: -38px;
+	right: 10px;
+	background-color: #fff;
+	width: 36px;
+	height: 36px;
+	border-radius: 60px;
+	text-align: center;
+	border: 1px solid #ddd;
+	z-index: 1000;
+	opacity: 0.6;
+	transition: bottom 0.25s, border-color 0.25s, opacity 0.25s;
+
+	.up-arrow {
+		fill: #ccc;
+		transition: fill 0.25s;
+	}
+
+	svg {
+		padding-top: 7px;
+	}
+
+	&.back-to-top--scrolled {
+		bottom: 12px;
+	}
+
+	&:hover {
+		border-color: #4bc6df;
+		opacity: 1;
+		cursor: pointer;
+		.up-arrow {
+			fill: #4bc6df;
+		}
+	}
+}
 // Modal
 
 .overlay__container {
@@ -128,7 +166,7 @@ figure {
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background-color: rgba(0, 0, 0, 0.45);
+	background-color: #F9F9F9;
 	overflow: auto;
     box-sizing: border-box;
 	display: none;
@@ -150,10 +188,11 @@ figure {
 	opacity: 1;
 }
 
-.overlay__headline {	&:hover {
+.overlay__headline {	
+	&:hover {
 		opacity: 0.75;
 	}
-	font-family: "Guardian Egyptian Web",Georgia,serif;
+	font-family: "Guardian Egyptian Web","Egyptian Display",Georgia,serif;
 	font-size: 40px;
 	line-height: 50px;
 	font-weight: 300;
@@ -233,7 +272,6 @@ figure {
 	height: 100%;
 	margin: auto;
 	overflow: hidden;
-	background-color: rgba(255,255,255,0.94);
 	padding: $gs-baseline*7 0px 0 0;
 	font-size: 16px;
 	line-height: 26px;
@@ -311,6 +349,16 @@ figure {
 	padding-bottom: $gs-baseline*3;
 }
 
+.overlay__progress {
+	border-top: 1px solid #ededed;
+	border-bottom: 1px solid #ededed;
+	margin: 18px 0;
+	padding: 8px 0;
+	font-weight: 500;
+	font-family: "Guardian Sans Web","Agate Sans",sans-serif;
+	font-size: 14px;
+}
+
 .overlay__social {
 	font-size: 12px;
 	line-height: 22px;
@@ -325,34 +373,45 @@ figure {
 			border: 0;
 		}
 	}
+}
 
-	.social-icon {
-		width: 32px;
-		height: 32px;
-		border-radius: 16px;
-		display: inline-block;
-		margin-right: 1px;
+.social-icon {
+	width: 32px;
+	height: 32px;
+	border-radius: 16px;
+	display: inline-block;
+	margin-right: 1px;
 
-		&.facebook {
-			background-color: #3067a3;
-			&:hover {
-				background-color: darken(#3067a3, 10%);
-			}
+	&.facebook {
+		background-color: #3067a3;
+		&:hover {
+			background-color: darken(#3067a3, 10%);
 		}
+	}
 
-		&.twitter {
-			background-color: #03b3ee;
-			&:hover {
-				background-color: darken(#03b3ee, 10%);
-			}
+	&.twitter {
+		background-color: #03b3ee;
+		&:hover {
+			background-color: darken(#03b3ee, 10%);
 		}
+	}
 
-		&.email {
-			background-color: #767676;
-			&:hover {
-				background-color: darken(#767676, 10%);
-			}
+	&.email {
+		background-color: #767676;
+		&:hover {
+			background-color: darken(#767676, 10%);
 		}
+	}
+}
+
+.header__social {
+	padding-top: 24px;
+	border-top: 1px solid #dfdfdf;
+	margin-top: 18px;
+	width: 25%;
+
+	@include mq($until: tablet) {
+		width: 50%;
 	}
 }
 
@@ -473,7 +532,7 @@ figure {
 	font-weight: 500;
 	color: #333333;
 	font-size: 22px;
-	font-family: "Guardian Egyptian Web",Georgia,serif;
+	font-family: "Guardian Egyptian Web","Egyptian Display",Georgia,serif;
 	box-sizing: border-box;
 
 	@include mq($until: tablet) {
@@ -526,7 +585,7 @@ figure {
 		}
 
 		h1 {
-			font-family: "Guardian Egyptian Web",Georgia,serif;
+			font-family: "Guardian Egyptian Web","Egyptian Display",Georgia,serif;
 			font-weight: 200;
 			font-size: 96px;
 			line-height: 96px;
@@ -550,6 +609,7 @@ figure {
 			max-width: 780px;
 
 			.link {
+				padding-top: 12px;
 				font-size: 18px;
 				font-weight: 500;
 				color: #666;
@@ -608,8 +668,8 @@ figure {
 
 	.overlay__header & {
 		@include mq($until: tablet) {
-		  font-size: 28px;
-		  padding-top: 10px;
+		  font-size: 22px;
+		  padding-top: 9px;
 		  display: inline-block;
 		}
 
@@ -671,7 +731,7 @@ figure {
 
 	.headline, {
 		font-size: 20px;
-		font-family: "Guardian Egyptian Web",Georgia,serif;
+		font-family: "Guardian Egyptian Web","Egyptian Display",Georgia,serif;
 		line-height: 24px;
 		font-weight: 500;
 		transition: padding ease-out 0.3s;
@@ -715,7 +775,7 @@ figure {
 		padding: 24px 20px;
 		overflow: hidden;
 		box-sizing: border-box;
-		font-family: "Guardian Egyptian Web","Agate Sans",sans-serif;
+		font-family: "Guardian Egyptian Web","Egyptian Display","Agate Sans",sans-serif;
 
 		&:hover {
 			cursor: pointer;
@@ -748,6 +808,7 @@ figure {
 					display: block;
 					color: #4bc6df;
 					font-size: 14px;
+					padding-top: $gs-baseline/2;
 					font-weight: 700;
 					position: absolute;
 					bottom: $gs-baseline;
@@ -1056,4 +1117,8 @@ figure.element-interactive {
 
 a {
     text-shadow: none !important;
+}
+
+img {
+	border: 0;
 }

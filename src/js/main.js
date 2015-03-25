@@ -4,7 +4,7 @@ define([
     'text!templates/itemTemplate.html',
     'text!templates/modalTemplate.html',
     'text!templates/headerTemplate.html',
-    'text!templates/footerTemplate.html',
+    'text!templates/footerTemplate.html'
 ], function(
     Backbone, 
     lazyload,
@@ -17,10 +17,10 @@ define([
 
     var itemCollection,
         headingText = {title: 'Immigrants in their own words <span class="headline-highlight">100 stories</span>',
-                       subheading: 'What pushed them away from their first homes, what pulled them to these shores, what new lives are they making in Britain? The Guardian asked immigrants living in the UK to tell us about their experiences. These are their stories<br><br><div class="link">The Guardian’s immigration special: <a href="http://gu.com/p/46qgd" target="_blank">introduction by Jonathan Freedland</a></div>'},
+                       subheading: 'What pushed them away from their first homes, what pulled them to these shores, what new lives are they making in Britain? The Guardian asked immigrants living in the UK to tell us about their experiences. These are their stories<div class="link">The Guardian’s immigration special: <a href="http://gu.com/p/46qgd" target="_blank">introduction by Jonathan Freedland</a></div>'},
         noticeboardID = '54d891e9e4b045255634008f',
         isWeb = typeof window.guardian === "undefined" ? false : true,
-        sortIDs = ['1433041', '1414116', '1414089', '1406807', '1393388', '1441027', '1412847', '1412841', '1414107', '1441032', '1414112', '1375728', '1414120', '1420599', '1441020', '1422203', '1426038', '1433182', '1441035', '1441024', '1433051', '1441029', '1412813', '1414097', '1412810', '1432899', '1432913', '1432964', '1441039', '1412817'],
+        sortIDs = ['1433041', '1414116', '1414089', '1406807', '1393388', '1441027', '1412847', '1412841', '1414107', '1441032', '1414112', '1375728', '1414120', '1442681', '1422203', '1441020', '1426038', '1441035', '1433182', '1441024', '1433051', '1441029', '1412813', '1414097', '1412810', '1432899', '1432913', '1432964', '1441039', '1412817'],
         lastModal;
 
     function init() {
@@ -56,6 +56,18 @@ define([
                 $('body').scrollTop(0);
                 $('.overlay__container').addClass('overlay__container--show');
                 $('html').addClass('dropdown-open');
+                
+                if(location.replace && window.history && window.history.back) {
+                    $('.nav-icon--next, .nav-icon--prev').click(function(e) { 
+                        e.preventDefault();
+                        location.replace(e.currentTarget.hash);
+                    });
+      
+                    $('.nav-icon--close').click(function(e) {
+                        e.preventDefault(); 
+                        window.history.back();
+                    });
+                }
 
                 return this;
             },
@@ -75,6 +87,8 @@ define([
                 this.model.unshift(items.where({ id: 'report/' + itemID }));
 
                 var indexPos = _.indexOf(items.models, items.where({ id: 'report/' + itemID })[0]);
+
+                this.model.models[0].set('position', (indexPos+1));
                 
                 if(items.at(indexPos+1)) {
                     this.model.models[0].set('nextItem', items.at(indexPos+1).attributes.id.substring(7));
@@ -170,6 +184,18 @@ define([
                 $('.element-interactive').html(html);
                 $('.main').before(headerHTML).after(footerHTML);
 
+                $(window).scroll(_.debounce(function(){
+                    if($(window).scrollTop() > 0) {
+                        var $back = $('.back-to-top')
+                        $back.addClass('back-to-top--scrolled');
+                        $back.click(function(e) { 
+                            window.scrollTo(0,0);
+                        });
+                    } else {
+                        $('.back-to-top').removeClass('back-to-top--scrolled');
+                    }
+                }, 250));
+
                 $('div.background-image').lazyload({
                     effect : "fadeIn",
                     effectspeed: 250,
@@ -213,7 +239,6 @@ define([
                 $('html').removeClass('dropdown-open');
 
                 if(lastModal) {
-                    console.log($('#item-' + lastModal + '').offset().top);
                     window.scrollTo(0,$('#item-' + lastModal + '').offset().top);
                 }
             });
